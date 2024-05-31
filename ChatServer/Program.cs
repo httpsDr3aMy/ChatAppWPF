@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Net;
+using ChatServer.Net.IO;
 
 namespace ChatServer
 {
@@ -18,9 +19,23 @@ namespace ChatServer
             {
                 var client = new Client(_listener.AcceptTcpClient());
                 _users.Add(client);
-
+                BroadcastConnection();
             }
-            Console.WriteLine("Client has connected!");
+        }
+
+        static void BroadcastConnection()
+        {
+            foreach(var user in _users)
+            {
+                foreach(var usr in _users)
+                {
+                    var broadcastPacket = new PacketBuilder();
+                    broadcastPacket.WriteOPCode(1);
+                    broadcastPacket.WriteMessage(usr.Username);
+                    broadcastPacket.WriteMessage(usr.UID.ToString());
+                    user.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
+                }
+            }
         }
     }
 }

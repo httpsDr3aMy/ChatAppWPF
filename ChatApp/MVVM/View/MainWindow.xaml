@@ -24,7 +24,13 @@
             <TextBlock Text="ChatApp" DockPanel.Dock="Top" TextAlignment="center" Margin="0 10" FontSize="18"/>
             <TextBox DockPanel.Dock="Top" Height="30" VerticalContentAlignment="center" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
             <Button DockPanel.Dock="Top" Height="30" Content="Connect" Command="{Binding ConnectToServerCommand}"/>
-            <ListView />
+            <ListView ItemsSource="{Binding Users}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Username}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </DockPanel>
         <StackPanel Grid.Column="1" Grid.Row="2">
             <StackPanel Orientation="Horizontal" >
